@@ -40,4 +40,4 @@ class Server {
     }
 }
 
-module.exports = new Server(TodoService.service, serviceMap);
+module.exports = new Server(TodoService.service, serviceMap).get();
