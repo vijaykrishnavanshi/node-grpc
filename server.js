@@ -13,25 +13,31 @@ const packageDefinition = protoLoader.loadSync(
         oneofs: true
     },
 );
+const { TodoService } = grpc.loadPackageDefinition(packageDefinition).todoproto;
 
-const todoproto = grpc.loadPackageDefinition(packageDefinition).todoproto;
-
-const server = new grpc.Server()
 const todos = [];
-server.addService(todoproto.TodoService.service, {
-    list : (_,callback) =>{
+
+const serviceMap = {
+    list: (_,callback) =>{
         console.log(todos);
         callback(null, todos);
     },
-    insert : (call,callback) => {
+    insert: (call,callback) => {
         let todo = call.request;
         todo.id = uuid()
         todos.push(todo)
         callback(null,todo)
-    },
-})
+    }
+};
 
-server.bind('127.0.0.1:50051',
-grpc.ServerCredentials.createInsecure())
-console.log('server is running at http://127.0.0.1:50051')
-server.start()
+class Server {
+    constructor(service, serviceMap) {
+        this.server = new grpc.Server();
+        this.server.addService(service, serviceMap);
+    }
+    get() {
+        return this.server;
+    }
+}
+
+module.exports = new Server(TodoService.service, serviceMap);

@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev:server": "nodemon node .",
+    "server": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -16,5 +18,8 @@
     "@grpc/proto-loader": "^0.5.2",
     "grpc": "^1.24.2",
     "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
   }
 }
